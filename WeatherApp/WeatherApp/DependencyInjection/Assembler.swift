@@ -11,6 +11,7 @@ let assembler = Assembler()
 
 class Assembler {
   
+  var singletonInstance: AnyObject?
   /// Controllers
   func homeController() -> HomeViewController {
     return UIStoryboard.main.viewController(HomeViewController.self)
@@ -45,7 +46,10 @@ class Assembler {
   }
   
   func storageManager() -> DataManager {
-    return StorageManager()
+    if singletonInstance == nil {
+      singletonInstance = StorageManager()
+    }
+    return singletonInstance as! DataManager
   }
   
   /// ViewModels
@@ -59,6 +63,10 @@ class Assembler {
   
   func weatherViewModel() -> WeatherViewModel {
     return WeatherViewModel()
+  }
+  
+  func forecastViewModel() -> ForecastViewModel {
+    return ForecastViewModel()
   }
 }
 

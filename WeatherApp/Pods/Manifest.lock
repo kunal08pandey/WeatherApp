@@ -1,20 +1,24 @@
 PODS:
   - Kingfisher (6.3.0)
   - ProgressHUD (13.6)
+  - ReachabilitySwift (5.0.0)
 
 DEPENDENCIES:
   - Kingfisher
   - ProgressHUD
+  - ReachabilitySwift
 
 SPEC REPOS:
   trunk:
     - Kingfisher
     - ProgressHUD
+    - ReachabilitySwift
 
 SPEC CHECKSUMS:
   Kingfisher: 6c3df386db71d82c0817a429d2c9421a77396529
   ProgressHUD: 4bdaa0d2ddf676b23324b199f9facffb5c3a1620
+  ReachabilitySwift: 985039c6f7b23a1da463388634119492ff86c825
 
-PODFILE CHECKSUM: 0d02c6383a54bf98ebfafba9262b018361244b86
+PODFILE CHECKSUM: f4d555acd0842633731d3bf3af837b62ac6095b5
 
 COCOAPODS: 1.10.0

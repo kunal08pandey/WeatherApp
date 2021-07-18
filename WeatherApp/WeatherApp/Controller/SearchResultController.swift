@@ -12,7 +12,7 @@ protocol HandleMapSearch: AnyObject {
     func dropPinZoomIn(placemark:MKPlacemark)
 }
 
-class SearchResultController: UITableViewController {
+class SearchResultController: BaseTableViewController {
   
   var searchResults: [MKMapItem] = []
   weak var delegate: HandleMapSearch?

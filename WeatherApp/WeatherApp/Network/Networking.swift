@@ -48,7 +48,7 @@ struct HTTPNetworking: Networking {
     dataRequest.httpMethod = request.method.rawValue
     var completeParameters = request.parameters
     completeParameters[Path.appID] = request.path.apiKey
-    completeParameters[Path.units] = "metric"
+    completeParameters[Path.units] = AppPreferences.unitSystems.value
     dataRequest.url = parameter(url: url, paramaters: completeParameters)
     debugPrint("URL: \(dataRequest.url!.absoluteString)")
     URLSession.shared.dataTask(with: dataRequest) { (data, _, error) in

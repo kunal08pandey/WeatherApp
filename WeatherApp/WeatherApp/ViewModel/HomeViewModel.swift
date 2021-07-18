@@ -24,8 +24,13 @@ class HomeViewModel {
   }
   
   func fetchCities() {
-    let storageManager = StorageManager()
+    let storageManager = assembler.storageManager()
     cities = storageManager.fetch(CityModel.self)
+  }
+  
+  func deleteCities(at indexPath: IndexPath) {
+    let storageManager = assembler.storageManager()
+    storageManager.deleteObject(cities[indexPath.row])
   }
   
 }

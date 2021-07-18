@@ -10,7 +10,7 @@ import MapKit
 import CoreData
 import CoreLocation
 
-class AddLocationViewController: UIViewController {
+class AddLocationViewController: BaseViewController {
   
   @IBOutlet weak var mapView: MKMapView!
   
@@ -35,7 +35,11 @@ class AddLocationViewController: UIViewController {
     searchResultController.delegate = self
     let searchController = UISearchController(searchResultsController: searchResultController)
     searchController.delegate = self
+    searchController.searchBar.tintColor = .white
+    searchController.searchBar.searchTextField.leftView?.tintColor = .white
     searchController.searchResultsUpdater = self
+    UITextField.appearance(whenContainedInInstancesOf: [UISearchBar.self]).defaultTextAttributes =
+      [.foregroundColor: UIColor.white]
     searchController.obscuresBackgroundDuringPresentation = false
     searchController.searchBar.placeholder = "Search Locations"
     navigationItem.searchController = searchController
@@ -81,6 +85,11 @@ extension AddLocationViewController: HandleMapSearch {
     let annotation = MKPointAnnotation()
     annotation.coordinate = placemark.coordinate
     annotation.title = placemark.name
+    let annotationView = MKPinAnnotationView(annotation: annotation, reuseIdentifier: "annotationView")
+    annotationView.image = #imageLiteral(resourceName: "marker_sun").withRenderingMode(.alwaysTemplate)
+    annotationView.animatesDrop = true
+    annotationView.tintColor = .red
+    mapView.delegate = self
     mapView.addAnnotation(annotation)
     let span = MKCoordinateSpan(latitudeDelta: 0.05, longitudeDelta: 0.05)
     let region = MKCoordinateRegion(center: placemark.coordinate, span: span)
@@ -107,5 +116,19 @@ extension AddLocationViewController: CLLocationManagerDelegate {
   
   func locationManager(_ manager: CLLocationManager, didFailWithError error: Error) {
     print("\(error)")
+  }
+}
+
+extension AddLocationViewController: MKMapViewDelegate {
+  
+  func mapView(_ mapView: MKMapView, viewFor annotation: MKAnnotation) -> MKAnnotationView? {
+    var annotationView = mapView.dequeueReusableAnnotationView(withIdentifier: "annotationView")
+    if annotationView == nil {
+      
+      annotationView = MKAnnotationView(annotation: MKPointAnnotation(), reuseIdentifier: "annotationView")
+    }
+    annotationView?.image = #imageLiteral(resourceName: "marker_sun")
+//    annotation
+    return annotationView
   }
 }

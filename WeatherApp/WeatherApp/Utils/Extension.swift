@@ -60,6 +60,14 @@ extension UIView {
     return UINib(nibName: identifer, bundle: nil)
   }
   
+  func addBlurToView() {
+    let blurEffect = UIBlurEffect(style: .light)
+    let blurEffectView = UIVisualEffectView(effect: blurEffect)
+    blurEffectView.frame = self.bounds
+    blurEffectView.alpha = 0.8
+    blurEffectView.autoresizingMask = [.flexibleWidth, .flexibleHeight]
+    self.addSubview(blurEffectView)
+  }
 }
 
 extension UIImageView {
@@ -117,5 +125,42 @@ extension String {
           (self as NSString).draw(in: CGRect(origin: .zero, size: size),
                                   withAttributes: attributes)
       }
+  }
+}
+
+extension Date {
+  
+  var day: String  {
+    let formatter = DateFormatter()
+    formatter.dateFormat = "EEE"
+    formatter.timeZone = TimeZone(secondsFromGMT: 0)
+    return formatter.string(from: self)
+  }
+  
+  var time: String  {
+    let formatter = DateFormatter()
+    formatter.dateFormat = "h:mm a"
+    formatter.timeZone = TimeZone(secondsFromGMT: 0)
+//    formatter.locale = Locale(identifier: "en_IN")
+    return formatter.string(from: self)
+  }
+  
+}
+
+extension Double {
+  var tempUnit: String {
+    return "\(Int(self))\(AppPreferences.unitSystems.tempUnit)"
+  }
+}
+
+extension Numeric {
+  var pressureUnit: String {
+    return "\(self)hPa"
+  }
+  var humidityUnit: String {
+    return "\(self)%"
+  }
+  var windSpeedUnit: String {
+    return "\(self)\(AppPreferences.unitSystems.windSpeedUnit)"
   }
 }

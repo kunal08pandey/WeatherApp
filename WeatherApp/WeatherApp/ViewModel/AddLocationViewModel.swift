@@ -19,7 +19,7 @@ class AddLocationViewModel: NSObject {
     if let cityModel = storageManager.instantiate(CityModel.self) {
       let cityName = location.locality
       let latitude = location.coordinate.latitude
-      let longitude = location.coordinate.latitude
+      let longitude = location.coordinate.longitude
       cityModel.setValue(cityName, forKey: "cityName")
       cityModel.setValue(latitude, forKey: "lat")
       cityModel.setValue(longitude, forKey: "lon")

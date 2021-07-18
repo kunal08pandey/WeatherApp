@@ -40,16 +40,6 @@ struct Main: Codable {
         case tempMax = "temp_max"
         case pressure, humidity
     }
-  
-//  init(from decoder: Decoder) throws {
-//    let container = try decoder.container(keyedBy: CodingKeys.self)
-//    self.temp = try container.decode(Double.self, forKey: .temp)
-//    self.feelsLike = try container.decode(Double.self, forKey: .feelsLike)
-//    self.tempMin = try container.decode(Double.self, forKey: .tempMin)
-//    self.tempMax = try container.decode(Double.self, forKey: .tempMax)
-//    self.pressure = try container.decode(Int.self, forKey: .pressure)
-//    self.humidity = try container.decode(Int.self, forKey: .humidity)
-//  }
 }
 
 // MARK: - Sys
@@ -58,7 +48,6 @@ struct Sys: Codable {
     let id: Int = 0
     let country: String
     let sunrise, sunset: Int
-    let pod: Pod?
 }
 
 // MARK: - WeatherElement
@@ -71,4 +60,16 @@ struct WeatherElement: Codable {
         case weatherDescription = "description"
         case icon
     }
+}
+
+// MARK: - Wind
+struct Wind: Codable {
+    let speed: Double
+    let deg: Int
+    let gust: Double
+}
+
+// MARK: - Clouds
+struct Clouds: Codable {
+    let all: Int
 }

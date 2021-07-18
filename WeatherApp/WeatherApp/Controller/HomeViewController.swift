@@ -7,7 +7,7 @@
 
 import UIKit
 
-class HomeViewController: UIViewController {
+class HomeViewController: BaseViewController {
   
   @IBOutlet weak var tableView: UITableView!
   
@@ -50,4 +50,18 @@ extension HomeViewController: UITableViewDelegate {
     self.navigationController?.pushViewController(weatherController, animated: true)
   }
   
+  func tableView(_ tableView: UITableView, canEditRowAt indexPath: IndexPath) -> Bool {
+    return true
+  }
+  
+  func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCell.EditingStyle, forRowAt indexPath: IndexPath) {
+    if editingStyle == .delete {
+      tableView.beginUpdates()
+      viewModel.deleteCities(at: indexPath)
+      viewModel.fetchCities()
+      tableView.deleteRows(at: [indexPath], with: .automatic)
+      tableView.endUpdates()
+      
+    }
+  }
 }

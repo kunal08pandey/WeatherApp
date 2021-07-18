@@ -9,7 +9,7 @@ import Foundation
 
 protocol APIServiceProtocol {
   func getCurrentWeather(lat: Double, lon: Double, completion: @escaping (Result<WeatherInfo?, Error>) -> Void)
-  func getForecast<T>(_ cityName: String, completion:  @escaping (Result<[T]?, Error>) -> Void)
+  func getForecast(lat: Double, lon: Double, completion:  @escaping (Result<WeatherForecast?, Error>) -> Void)
 }
 
 struct WeatherRequest: URLQueryRequest {
@@ -22,13 +22,21 @@ struct WeatherRequest: URLQueryRequest {
   }
   
   var parameters: Parameter {
-    return ["lat": "\(lat)", "lon": "\(lon)"]
+    return ["lat": "\(lat)", "lon": "\(lon)", "cnt": "5"]
   }
 }
 
 struct ForecastRequest: URLQueryRequest {
+  
+  let lat: Double
+  let lon: Double
+  
   var path: Path {
     return .forecast
+  }
+  
+  var parameters: Parameter {
+    return ["lat": "\(lat)", "lon": "\(lon)"]
   }
 }
 
@@ -39,8 +47,9 @@ struct APIService: APIServiceProtocol {
     fetcher.fetch(request: WeatherRequest(lat: lat, lon: lon), responder: responder)
   }
   
-  func getForecast<T>(_ cityName: String, completion: @escaping (Result<[T]?, Error>) -> Void) {
-    
+  func getForecast(lat: Double, lon: Double, completion:  @escaping (Result<WeatherForecast?, Error>) -> Void) {
+    let responder = Responder(completion: completion)
+    fetcher.fetch(request: ForecastRequest(lat: lat, lon: lon), responder: responder)
   }
   
   

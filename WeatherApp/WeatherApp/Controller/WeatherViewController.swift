@@ -8,45 +8,53 @@
 import UIKit
 import ProgressHUD
 
-class WeatherViewController: UIViewController {
+class WeatherViewController: BaseViewController {
   
   let viewModel = assembler.weatherViewModel()
   
-  @IBOutlet weak var cityNameLabel: UILabel!
-  @IBOutlet weak var cityMinTempLabel: UILabel!
-  @IBOutlet weak var cityWeatherLabel: UILabel!
-  @IBOutlet weak var cityMaxTempLabel: UILabel!
+  @IBOutlet weak var minTempLabel: UILabel!
+  @IBOutlet weak var maxTempLabel: UILabel!
+  @IBOutlet weak var currentTempLabel: UILabel!
+  @IBOutlet weak var sunriseTimeLabel: UILabel!
+  @IBOutlet weak var sunsetTimeLabel: UILabel!
+  @IBOutlet weak var humidityLevelLabel: UILabel!
+  @IBOutlet weak var atmosphericPressureLabel: UILabel!
+  @IBOutlet weak var windspeedLabel: UILabel!
   @IBOutlet weak var iconView: UIImageView!
+  @IBOutlet weak var containerView: UIView!
   
   override func viewDidLoad() {
     super.viewDidLoad()
     ProgressHUD.show()
-    viewModel.getCurrentWeather { [weak self] weatherInfo in
+    viewModel.getCurrentWeather { [weak self] in
       ProgressHUD.dismiss()
-      self?.updateUI(weatherInfo: weatherInfo)
+      self?.updateUI()
     }
   }
   
-  func updateUI(weatherInfo: WeatherInfo?) {
-    if let weather = weatherInfo {
-      cityNameLabel.text = viewModel.cityName
-      cityMinTempLabel.text = "\(weather.main.tempMin) ºC"
-      cityMaxTempLabel.text = "\(weather.main.tempMax) ºC"
-      cityWeatherLabel.text = weather.weather.first?.main ?? ""
-      iconView.setImage(urlString: viewModel.iconUrl)
-    }
+  func updateUI() {
+    self.title = viewModel.cityName
+    sunriseTimeLabel.text = viewModel.sunriseTime
+    sunsetTimeLabel.text = viewModel.sunsetTime
+    currentTempLabel.text = viewModel.currentTemprature
+    humidityLevelLabel.text = viewModel.humidity
+    atmosphericPressureLabel.text = viewModel.atmosphericPressure
+    windspeedLabel.text = viewModel.windSpeed
+    minTempLabel.text = viewModel.minTemperature
+    maxTempLabel.text = viewModel.maxTemperature
+    iconView.image = viewModel.icon
+    containerView.isHidden = false
   }
   
+  // MARK: - Navigation
   
-  
-  /*
-   // MARK: - Navigation
-   
-   // In a storyboard-based application, you will often want to do a little preparation before navigation
-   override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-   // Get the new view controller using segue.destination.
-   // Pass the selected object to the new view controller.
-   }
-   */
+  // In a storyboard-based application, you will often want to do a little preparation before navigation
+  override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+    // Get the new view controller using segue.destination.
+    // Pass the selected object to the new view controller.
+    if segue.identifier == "contains", let destination = segue.destination as? ForecastViewController {
+      destination.viewModel.city = viewModel.city
+    }
+  }
   
 }

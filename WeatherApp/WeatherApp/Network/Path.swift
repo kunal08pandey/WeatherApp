@@ -15,7 +15,7 @@ enum Path: String {
   static let baseURL = "https://api.openweathermap.org/data/2.5/"
   
   case weather = "weather"
-  case forecast = "forecast"
+  case forecast = "forecast/daily"
   
   var url: URL? {
     return URL(string: self.rawValue, relativeTo: URL(string: Self.baseURL))

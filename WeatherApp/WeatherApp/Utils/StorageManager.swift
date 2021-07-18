@@ -10,6 +10,7 @@ import CoreData
 protocol DataManager {
   func addObject<T: NSManagedObject>(_ model: T)
   func instantiate<T: NSManagedObject>(_ type: T.Type) -> NSManagedObject?
+  func deleteObject<T: NSManagedObject>(_ model: T)
   func fetch<T: NSManagedObject>(_ type: T.Type) -> [T]
   func saveContext()
 }
@@ -77,6 +78,11 @@ class StorageManager: DataManager {
   func instantiate<T: NSManagedObject>(_ type: T.Type) -> NSManagedObject? {
     guard let entity = entity(type) else { return nil }
     return NSManagedObject(entity: entity, insertInto: persistentContainer.viewContext)
+  }
+  
+  func deleteObject<T: NSManagedObject>(_ model: T) {
+    persistentContainer.viewContext.delete(model)
+    saveContext()
   }
   
   func fetch<T: NSManagedObject>(_ type: T.Type) -> [T] {

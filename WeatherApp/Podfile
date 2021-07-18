@@ -8,6 +8,7 @@ target 'WeatherApp' do
   # Pods for WeatherApp
   pod 'Kingfisher'
   pod 'ProgressHUD'
+  pod 'ReachabilitySwift'
 
   target 'WeatherAppTests' do
     inherit! :search_paths
