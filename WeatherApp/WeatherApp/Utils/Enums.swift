@@ -41,14 +41,19 @@ enum WeatherIcon: String {
   case partialCloudyNight = "02n"
   case cloudyDay = "03d"
   case cloudyNight = "03n"
-  case heavyCloud = "04d"
-  case heavyRain = "10d"
-  case lightRain = "9d"
+  case heavyCloudDay = "04d"
+  case heavyCloudNight = "04n"
+  case heavyRainDay = "10d"
+  case heavyRainNight = "10n"
+  case lightRainDay = "9d"
+  case lightRainNight = "9n"
   case thunderstorm = "11d"
   case rain = ""
-  case windy = "50d"
-  case snow = "13d"
-  case fog = "50n"
+  case windyDay = "50d"
+  case windyNight = "50n"
+  case snowDay = "13d"
+  case snowNight = "13n"
+  case fog = "fog"
   
   var icon: UIImage {
     switch self {
@@ -60,11 +65,11 @@ enum WeatherIcon: String {
       return #imageLiteral(resourceName: "partly_cloudy_day")
     case .partialCloudyNight:
       return #imageLiteral(resourceName: "partly_cloudy_night")
-    case .cloudyDay, .cloudyNight, .heavyCloud:
+    case .cloudyDay, .cloudyNight, .heavyCloudDay, .heavyCloudNight:
       return #imageLiteral(resourceName: "cloudy")
-    case .heavyRain:
+    case .heavyRainDay, .heavyRainNight:
       return #imageLiteral(resourceName: "heavy_rain")
-    case .lightRain:
+    case .lightRainDay, .lightRainNight:
       return #imageLiteral(resourceName: "light_rain")
     case .rain:
       return #imageLiteral(resourceName: "moderate_rain")
@@ -72,10 +77,31 @@ enum WeatherIcon: String {
       return #imageLiteral(resourceName: "storm")
     case .fog:
       return #imageLiteral(resourceName: "fog")
-    case .windy:
+    case .windyDay, .windyNight:
       return #imageLiteral(resourceName: "windy")
-    case .snow:
+    case .snowDay, .snowNight:
       return #imageLiteral(resourceName: "light_snow")
+    }
+  }
+}
+
+enum SocialLinks: Int {
+  case facebook
+  case twitter
+  case linkedIn
+  case github
+  
+  
+  var url: URL? {
+    switch self {
+    case .facebook:
+      return URL(string: "https://www.facebook.com/groups/270748973021342")
+    case .twitter:
+      return URL(string: "https://twitter.com/OpenWeatherMap")
+    case .linkedIn:
+      return URL(string: "https://www.linkedin.com/company/openweathermap/")
+    case .github:
+      return URL(string: "https://github.com/search?q=openweathermap&ref=cmdform")
     }
   }
 }

@@ -7,19 +7,19 @@
 
 import UIKit
 
-extension CityModel: ModelLayer {
+class LocationObject {
   
-  var title: String {
-    return cityName ?? ""
-  }
-  
-  var image: UIImage? {
-    return nil
-  }
-  
-  var url: String {
-    return ""
-  }
+//  var title: String {
+//    return cityName ?? ""
+//  }
+//  
+//  var image: UIImage? {
+//    return nil
+//  }
+//  
+//  var url: String {
+//    return ""
+//  }
   
   
 }

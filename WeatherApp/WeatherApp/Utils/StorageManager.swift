@@ -11,6 +11,7 @@ protocol DataManager {
   func addObject<T: NSManagedObject>(_ model: T)
   func instantiate<T: NSManagedObject>(_ type: T.Type) -> NSManagedObject?
   func deleteObject<T: NSManagedObject>(_ model: T)
+  func deleteObjects<T: NSManagedObject>(_ type: T.Type)
   func fetch<T: NSManagedObject>(_ type: T.Type) -> [T]
   func saveContext()
 }
@@ -83,6 +84,14 @@ class StorageManager: DataManager {
   func deleteObject<T: NSManagedObject>(_ model: T) {
     persistentContainer.viewContext.delete(model)
     saveContext()
+  }
+  
+  func deleteObjects<T: NSManagedObject>(_ type: T.Type) {
+    let objects = fetch(type)
+    for object in objects {
+      persistentContainer.viewContext.delete(object)
+      saveContext()
+    }
   }
   
   func fetch<T: NSManagedObject>(_ type: T.Type) -> [T] {

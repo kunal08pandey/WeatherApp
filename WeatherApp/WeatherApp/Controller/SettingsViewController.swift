@@ -6,6 +6,7 @@
 //
 
 import UIKit
+import SafariServices
 
 class SettingsViewController: BaseTableViewController {
 
@@ -14,6 +15,9 @@ class SettingsViewController: BaseTableViewController {
       segmentedControl.selectedSegmentIndex = AppPreferences.unitSystems.rawValue
     }
   }
+  
+  let viewModel = assembler.settingsViewModel()
+  
     override func viewDidLoad() {
         super.viewDidLoad()
 
@@ -33,7 +37,7 @@ class SettingsViewController: BaseTableViewController {
 
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         // #warning Incomplete implementation, return the number of rows
-        return 2
+        return 3
     }
 
     /*
@@ -95,6 +99,23 @@ class SettingsViewController: BaseTableViewController {
     if let unitSystem = UnitSystem(rawValue: segmentedControl.selectedSegmentIndex) {
       AppPreferences.unitSystems = unitSystem
     }
+  }
+
+  @IBAction func resetCities() {
+    let alert = UIAlertController(title: "Reset Cities", message: "Do you really want to delete cities ?", preferredStyle: .alert)
+    let yesAction = UIAlertAction(title: "Yes", style: .default) { [weak self] _ in
+      self?.viewModel.resetCities()
+    }
+    let noAction = UIAlertAction(title: "No", style: .cancel, handler: nil)
+    alert.addAction(yesAction)
+    alert.addAction(noAction)
+    self.present(alert, animated: true, completion: nil)
+  }
+  
+  @IBAction func socialLinksOpen(_ sender: UIButton) {
+    guard let socialLinks = SocialLinks(rawValue: sender.tag), let url = socialLinks.url else { return }
+    let safari = SFSafariViewController(url: url)
+    self.present(safari, animated: true, completion: nil)
   }
 
 }

@@ -15,12 +15,12 @@ class AddLocationViewModel: NSObject {
     self.storageManager = storageManager
   }
   
-  func saveLocation(_ location: MKPlacemark) {
-    if let cityModel = storageManager.instantiate(CityModel.self) {
-      let cityName = location.locality
-      let latitude = location.coordinate.latitude
-      let longitude = location.coordinate.longitude
-      cityModel.setValue(cityName, forKey: "cityName")
+  func saveLocation(_ title: String, coordinate: CLLocationCoordinate2D) {
+    if let cityModel = storageManager.instantiate(LocationEntity.self) {
+      let cityName = title
+      let latitude = coordinate.latitude
+      let longitude = coordinate.longitude
+      cityModel.setValue(cityName, forKey: "locationName")
       cityModel.setValue(latitude, forKey: "lat")
       cityModel.setValue(longitude, forKey: "lon")
       storageManager.saveContext()

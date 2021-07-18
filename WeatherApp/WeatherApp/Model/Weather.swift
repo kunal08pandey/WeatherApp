@@ -66,7 +66,7 @@ struct WeatherElement: Codable {
 struct Wind: Codable {
     let speed: Double
     let deg: Int
-    let gust: Double
+    let gust: Double?
 }
 
 // MARK: - Clouds

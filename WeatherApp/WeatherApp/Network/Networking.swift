@@ -51,6 +51,7 @@ struct HTTPNetworking: Networking {
     completeParameters[Path.units] = AppPreferences.unitSystems.value
     dataRequest.url = parameter(url: url, paramaters: completeParameters)
     debugPrint("URL: \(dataRequest.url!.absoluteString)")
+    assembler.networkUtil().checkConnectivityIssue()
     URLSession.shared.dataTask(with: dataRequest) { (data, _, error) in
       DispatchQueue.main.async {
         if let data = data {

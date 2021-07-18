@@ -17,6 +17,7 @@ class AddLocationViewController: BaseViewController {
   var locationManager = CLLocationManager()
   
   var selectedPin: MKPlacemark? = nil
+  
   let viewModel = assembler.addLocationViewModel()
   
   override func viewDidLoad() {
@@ -54,10 +55,14 @@ class AddLocationViewController: BaseViewController {
   }
   
   @IBAction func bookmarkedLocation() {
-    guard let selectedPin = self.selectedPin else { return }
-    viewModel.saveLocation(selectedPin)
-    
+    if let selectedPin = self.selectedPin {
+      viewModel.saveLocation(selectedPin.locality ?? "",
+                             coordinate: selectedPin.coordinate)
       self.navigationController?.popViewController(animated: true)
+    } else if let title = mapView.userLocation.title {
+      viewModel.saveLocation(title, coordinate: mapView.userLocation.coordinate)
+    }
+    navigationController?.popViewController(animated: true)
   }
 }
 
@@ -127,8 +132,8 @@ extension AddLocationViewController: MKMapViewDelegate {
       
       annotationView = MKAnnotationView(annotation: MKPointAnnotation(), reuseIdentifier: "annotationView")
     }
-    annotationView?.image = #imageLiteral(resourceName: "marker_sun")
-//    annotation
+    annotationView?.image = #imageLiteral(resourceName: "marker_sun").withRenderingMode(.alwaysTemplate)
+    annotationView?.tintColor = .red
     return annotationView
   }
 }

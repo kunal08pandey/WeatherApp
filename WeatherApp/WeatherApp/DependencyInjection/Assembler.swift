@@ -14,7 +14,8 @@ class Assembler {
   var singletonInstance: AnyObject?
   /// Controllers
   func homeController() -> HomeViewController {
-    return UIStoryboard.main.viewController(HomeViewController.self)
+    let controller = UIStoryboard.main.viewController(HomeViewController.self)
+    return controller
   }
   
   func addLocationController() -> AddLocationViewController {
@@ -52,6 +53,10 @@ class Assembler {
     return singletonInstance as! DataManager
   }
   
+  func networkUtil() -> NetworkUtil {
+    return NetworkUtil()
+  }
+  
   /// ViewModels
   func addLocationViewModel() -> AddLocationViewModel {
     return AddLocationViewModel(storageManager())
@@ -67,6 +72,10 @@ class Assembler {
   
   func forecastViewModel() -> ForecastViewModel {
     return ForecastViewModel()
+  }
+  
+  func settingsViewModel() -> SettingsViewModel {
+    return SettingsViewModel(storageManager())
   }
 }
 

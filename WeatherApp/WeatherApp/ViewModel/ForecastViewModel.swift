@@ -10,7 +10,7 @@ import UIKit
 class ForecastViewModel {
   
   var forecastList: [WeatherForecastDay] = []
-  var city: CityModel?
+  var city: LocationEntity?
   
   func fetchForecast(completion: @escaping () -> Void) {
     guard let city = city else { return }

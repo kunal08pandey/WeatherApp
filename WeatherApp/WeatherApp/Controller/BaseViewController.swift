@@ -6,6 +6,7 @@
 //
 
 import UIKit
+import Reachability
 
 class BaseViewController: UIViewController {
   
@@ -30,10 +31,23 @@ class BaseViewController: UIViewController {
     return .lightContent
   }
   
+  override var shouldAutorotate: Bool {
+    return true
+  }
+  
   private func addBackgroundImage() {
     view.addSubview(backgroundImageView)
+    updateBackgroundConstraints()
     view.sendSubviewToBack(backgroundImageView)
     backgroundImageView.addBlurToView()
+  }
+  
+  func updateBackgroundConstraints() {
+    guard let superview = backgroundImageView.superview else { return }
+    backgroundImageView.leadingAnchor.constraint(equalTo: superview.leadingAnchor).isActive = true
+    backgroundImageView.topAnchor.constraint(equalTo: superview.topAnchor).isActive = true
+    backgroundImageView.bottomAnchor.constraint(equalTo: superview.bottomAnchor).isActive = true
+    backgroundImageView.trailingAnchor.constraint(equalTo: superview.trailingAnchor).isActive = true
   }
   
   func backButton() {
@@ -47,7 +61,7 @@ class BaseViewController: UIViewController {
     UITableViewCell.appearance().tintColor = .white
     self.navigationController?.navigationBar.setBackgroundImage(UIImage(), for: .top, barMetrics: .default)
   }
-  
+
 }
 
 class BaseTableViewController: UITableViewController {
@@ -57,6 +71,10 @@ class BaseTableViewController: UITableViewController {
     imageView.translatesAutoresizingMaskIntoConstraints = false
     return imageView
   }()
+  
+  override var shouldAutorotate: Bool {
+    return true
+  }
   
   override func loadView() {
     super.loadView()
@@ -75,8 +93,17 @@ class BaseTableViewController: UITableViewController {
   
   private func addBackgroundImage() {
     self.navigationController?.view.addSubview(backgroundImageView)
+    updateBackgroundConstraints()
     self.navigationController?.view.sendSubviewToBack(backgroundImageView)
     backgroundImageView.addBlurToView()
+  }
+  
+  func updateBackgroundConstraints() {
+    guard let superview = backgroundImageView.superview else { return }
+    backgroundImageView.leadingAnchor.constraint(equalTo: superview.leadingAnchor).isActive = true
+    backgroundImageView.topAnchor.constraint(equalTo: superview.topAnchor).isActive = true
+    backgroundImageView.bottomAnchor.constraint(equalTo: superview.bottomAnchor).isActive = true
+    backgroundImageView.trailingAnchor.constraint(equalTo: superview.trailingAnchor).isActive = true
   }
   
   func backButton() {

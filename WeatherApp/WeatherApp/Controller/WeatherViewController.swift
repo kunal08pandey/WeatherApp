@@ -22,6 +22,7 @@ class WeatherViewController: BaseViewController {
   @IBOutlet weak var windspeedLabel: UILabel!
   @IBOutlet weak var iconView: UIImageView!
   @IBOutlet weak var containerView: UIView!
+  @IBOutlet weak var visibilityLabel: UILabel!
   
   override func viewDidLoad() {
     super.viewDidLoad()
@@ -42,6 +43,7 @@ class WeatherViewController: BaseViewController {
     windspeedLabel.text = viewModel.windSpeed
     minTempLabel.text = viewModel.minTemperature
     maxTempLabel.text = viewModel.maxTemperature
+    visibilityLabel.text = viewModel.visibility
     iconView.image = viewModel.icon
     containerView.isHidden = false
   }
@@ -53,7 +55,7 @@ class WeatherViewController: BaseViewController {
     // Get the new view controller using segue.destination.
     // Pass the selected object to the new view controller.
     if segue.identifier == "contains", let destination = segue.destination as? ForecastViewController {
-      destination.viewModel.city = viewModel.city
+      destination.viewModel.city = viewModel.location
     }
   }
   

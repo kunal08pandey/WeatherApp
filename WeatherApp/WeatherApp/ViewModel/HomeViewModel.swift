@@ -9,23 +9,23 @@ import Foundation
 
 class HomeViewModel {
   
-  var cities: [CityModel] = []
+  var cities: [LocationEntity] = []
   
   func numberOfItems() -> Int {
     return cities.count
   }
   
-  func item(at index: Int) -> CityModel {
+  func item(at index: Int) -> LocationEntity {
     return cities[index]
   }
   
   func cityName(at index: Int) -> String {
-    return cities[index].title
+    return cities[index].locationName ?? ""
   }
   
   func fetchCities() {
     let storageManager = assembler.storageManager()
-    cities = storageManager.fetch(CityModel.self)
+    cities = storageManager.fetch(LocationEntity.self)
   }
   
   func deleteCities(at indexPath: IndexPath) {

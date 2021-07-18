@@ -41,6 +41,12 @@ extension UITableView {
     register(T.nib(), forCellReuseIdentifier: T.identifer)
   }
   
+  func deleteRow(at indexPath: IndexPath, performDeletion: ()->Void) {
+    beginUpdates()
+    performDeletion()
+    deleteRows(at: [indexPath], with: .automatic)
+    endUpdates()
+  }
 }
 
 extension NSObject {
@@ -100,6 +106,10 @@ extension UIImageView {
 
 extension String {
   
+  var localized: String {
+    return NSLocalizedString(self, comment: "")
+  }
+  
   var initial: String {
     let words = self.components(separatedBy: " ")
     var initials = ""
@@ -153,6 +163,13 @@ extension Double {
   }
 }
 
+extension Int {
+  var visibilityUnit: String {
+    let valueInKM = self/1000
+    return "\(valueInKM)KM"
+  }
+}
+
 extension Numeric {
   var pressureUnit: String {
     return "\(self)hPa"
@@ -163,4 +180,5 @@ extension Numeric {
   var windSpeedUnit: String {
     return "\(self)\(AppPreferences.unitSystems.windSpeedUnit)"
   }
+  
 }

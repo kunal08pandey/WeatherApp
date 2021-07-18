@@ -9,7 +9,7 @@ import UIKit
 
 class WeatherViewModel {
   
-  var city: CityModel?
+  var location: LocationEntity?
   var cityName: String = ""
   var iconUrl: String {
     if let icon = currentWeatherInfo?.weather.first?.icon {
@@ -20,10 +20,10 @@ class WeatherViewModel {
   private var currentWeatherInfo: WeatherInfo?
   
   func getCurrentWeather(completion: @escaping () -> Void) {
-    guard let city = city else { return }
-    self.cityName = city.cityName ?? ""
+    guard let location = location else { return }
+    self.cityName = location.locationName ?? ""
     let apiservice = assembler.apiService()
-    apiservice.getCurrentWeather(lat: city.lat, lon: city.lon) { [weak self] result in
+    apiservice.getCurrentWeather(lat: location.lat, lon: location.lon) { [weak self] result in
       switch result {
       case .success(let weatherInfo):
         self?.currentWeatherInfo = weatherInfo
@@ -65,6 +65,9 @@ class WeatherViewModel {
     return currentWeatherInfo?.icon
   }
   
+  var visibility: String {
+    return currentWeatherInfo?.visibilityString ?? ""
+  }
 }
 
 protocol WeatherModel {
@@ -76,10 +79,15 @@ protocol WeatherModel {
   var atmosphericPressure: String { get }
   var humidity: String { get }
   var windSpeed: String { get }
+  var visibilityString: String { get }
   var icon: UIImage? { get }
 }
 
 extension WeatherInfo: WeatherModel {
+  var visibilityString: String {
+    return visibility.visibilityUnit
+  }
+  
   var windSpeed: String {
     return wind.speed.windSpeedUnit
   }
