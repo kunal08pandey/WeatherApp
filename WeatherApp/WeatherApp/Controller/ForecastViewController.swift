@@ -8,7 +8,7 @@
 import UIKit
 import ProgressHUD
 
-class ForecastViewController: BaseViewController {
+class ForecastViewController: UIViewController {
   
   let viewModel = assembler.forecastViewModel()
   
@@ -39,10 +39,5 @@ extension ForecastViewController: UITableViewDataSource {
     cell?.iconView.image = viewModel.icon(at: indexPath)
     return cell ?? UITableViewCell()
   }
-  
-  
-}
-
-extension ForecastViewController: UICollectionViewDelegate {
   
 }
