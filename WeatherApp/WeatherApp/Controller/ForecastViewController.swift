@@ -31,13 +31,13 @@ extension ForecastViewController: UITableViewDataSource {
   }
   
   func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-    let cell = tableView.dequeueReusableCell(withIdentifier: "ForecastCell") as? ForecastCell
-    cell?.timeLabel.text = viewModel.time(at: indexPath)
-    cell?.minTempLabel.text = viewModel.minTemp(at: indexPath)
-    cell?.maxTempLabel.text = viewModel.maxTemp(at: indexPath)
-    cell?.humidityLabel.text = viewModel.humidity(at: indexPath)
-    cell?.iconView.image = viewModel.icon(at: indexPath)
-    return cell ?? UITableViewCell()
+    let cell = tableView.dequeue(type: ForecastCell.self)
+    cell.timeLabel.text = viewModel.time(at: indexPath)
+    cell.minTempLabel.text = viewModel.minTemp(at: indexPath)
+    cell.maxTempLabel.text = viewModel.maxTemp(at: indexPath)
+    cell.humidityLabel.text = viewModel.humidity(at: indexPath)
+    cell.iconView.image = viewModel.icon(at: indexPath)
+    return cell
   }
   
 }

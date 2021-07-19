@@ -15,8 +15,8 @@ class AddLocationViewModel: NSObject {
     self.storageManager = storageManager
   }
   
-  func saveLocation(_ title: String, coordinate: CLLocationCoordinate2D) {
-    if let cityModel = storageManager.instantiate(LocationEntity.self) {
+  func saveLocation(_ title: String?, coordinate: CLLocationCoordinate2D) {
+    if let cityModel = storageManager.instantiate(LocationEntity.self), let title = title {
       let cityName = title
       let latitude = coordinate.latitude
       let longitude = coordinate.longitude
@@ -27,4 +27,14 @@ class AddLocationViewModel: NSObject {
     }
   }
   
+  func search(_ searchText: String, region: MKCoordinateRegion, completion: @escaping ([MKMapItem]) -> Void) {
+    let localRequest = MKLocalSearch.Request()
+    localRequest.naturalLanguageQuery = searchText
+    localRequest.region = region
+    let search = MKLocalSearch(request: localRequest)
+    search.start { response, _ in
+      guard let response = response else { return completion([])}
+      completion(response.mapItems)
+    }
+  }
 }

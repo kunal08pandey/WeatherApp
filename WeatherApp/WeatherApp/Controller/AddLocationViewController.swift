@@ -19,6 +19,7 @@ class AddLocationViewController: BaseViewController {
   var selectedPin: MKPlacemark? = nil
   
   let viewModel = assembler.addLocationViewModel()
+  let AnnotationReusableIdentifier = "annotationView"
   
   override func viewDidLoad() {
     super.viewDidLoad()
@@ -36,15 +37,19 @@ class AddLocationViewController: BaseViewController {
     searchResultController.delegate = self
     let searchController = UISearchController(searchResultsController: searchResultController)
     searchController.delegate = self
-    searchController.searchBar.tintColor = .white
-    searchController.searchBar.searchTextField.leftView?.tintColor = .white
     searchController.searchResultsUpdater = self
-    UITextField.appearance(whenContainedInInstancesOf: [UISearchBar.self]).defaultTextAttributes =
-      [.foregroundColor: UIColor.white]
     searchController.obscuresBackgroundDuringPresentation = false
-    searchController.searchBar.placeholder = "Search Locations"
+    searchController.searchBar.placeholder = "search_locations_placeholder".localized
     navigationItem.searchController = searchController
     definesPresentationContext = true
+    changeSearchBarStyle(searchController)
+  }
+  
+  func changeSearchBarStyle(_ searchController: UISearchController) {
+    searchController.searchBar.tintColor = .white
+    searchController.searchBar.searchTextField.leftView?.tintColor = .white
+    UITextField.appearance(whenContainedInInstancesOf: [UISearchBar.self]).defaultTextAttributes =
+      [.foregroundColor: UIColor.white]
   }
   
   func initializeLocation() {
@@ -56,9 +61,7 @@ class AddLocationViewController: BaseViewController {
   
   @IBAction func bookmarkedLocation() {
     if let selectedPin = self.selectedPin {
-      viewModel.saveLocation(selectedPin.locality ?? "",
-                             coordinate: selectedPin.coordinate)
-      self.navigationController?.popViewController(animated: true)
+      viewModel.saveLocation(selectedPin.locality, coordinate: selectedPin.coordinate)
     } else if let title = mapView.userLocation.title {
       viewModel.saveLocation(title, coordinate: mapView.userLocation.coordinate)
     }
@@ -70,15 +73,10 @@ extension AddLocationViewController: UISearchControllerDelegate, UISearchResults
   
   func updateSearchResults(for searchController: UISearchController) {
     guard let searchText = searchController.searchBar.text else { return }
-    let localRequest = MKLocalSearch.Request()
-    localRequest.naturalLanguageQuery = searchText
-    localRequest.region = mapView.region
-    let search = MKLocalSearch(request: localRequest)
-    search.start { response, _ in
-      guard let response = response,
-            let searchController = searchController.searchResultsController as? SearchResultController else { return }
-      searchController.searchResults = response.mapItems
-      searchController.tableView.reloadData()
+    viewModel.search(searchText, region: mapView.region) { mapItems in
+      guard let searchController = searchController.searchResultsController as? SearchResultController else { return }
+      searchController.searchResults = mapItems
+      searchController.reload()
     }
   }
 }
@@ -90,7 +88,7 @@ extension AddLocationViewController: HandleMapSearch {
     let annotation = MKPointAnnotation()
     annotation.coordinate = placemark.coordinate
     annotation.title = placemark.name
-    let annotationView = MKPinAnnotationView(annotation: annotation, reuseIdentifier: "annotationView")
+    let annotationView = MKPinAnnotationView(annotation: annotation, reuseIdentifier: AnnotationReusableIdentifier)
     annotationView.image = #imageLiteral(resourceName: "marker_sun").withRenderingMode(.alwaysTemplate)
     annotationView.animatesDrop = true
     annotationView.tintColor = .red
@@ -110,27 +108,21 @@ extension AddLocationViewController: CLLocationManagerDelegate {
     }
   }
   
-  func locationManagerDidResumeLocationUpdates(_ manager: CLLocationManager) {
-    print(manager.location)
-    
-  }
-  
   func locationManager(_ manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
-    print("\(String(describing: locations.first))")
+    debugPrint("\(String(describing: locations.first))")
   }
   
   func locationManager(_ manager: CLLocationManager, didFailWithError error: Error) {
-    print("\(error)")
+    debugPrint("\(error)")
   }
 }
 
 extension AddLocationViewController: MKMapViewDelegate {
   
   func mapView(_ mapView: MKMapView, viewFor annotation: MKAnnotation) -> MKAnnotationView? {
-    var annotationView = mapView.dequeueReusableAnnotationView(withIdentifier: "annotationView")
+    var annotationView = mapView.dequeueReusableAnnotationView(withIdentifier: AnnotationReusableIdentifier)
     if annotationView == nil {
-      
-      annotationView = MKAnnotationView(annotation: MKPointAnnotation(), reuseIdentifier: "annotationView")
+      annotationView = MKAnnotationView(annotation: annotation, reuseIdentifier: AnnotationReusableIdentifier)
     }
     annotationView?.image = #imageLiteral(resourceName: "marker_sun").withRenderingMode(.alwaysTemplate)
     annotationView?.tintColor = .red

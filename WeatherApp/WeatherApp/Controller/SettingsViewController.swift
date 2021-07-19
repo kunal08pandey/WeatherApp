@@ -102,11 +102,11 @@ class SettingsViewController: BaseTableViewController {
   }
 
   @IBAction func resetCities() {
-    let alert = UIAlertController(title: "Reset Cities", message: "Do you really want to delete cities ?", preferredStyle: .alert)
-    let yesAction = UIAlertAction(title: "Yes", style: .default) { [weak self] _ in
+    let alert = UIAlertController(title: "reset_cities_text".localized, message: "cities_delete_confirmation_message".localized, preferredStyle: .alert)
+    let yesAction = UIAlertAction(title: "yes_text".localized, style: .default) { [weak self] _ in
       self?.viewModel.resetCities()
     }
-    let noAction = UIAlertAction(title: "No", style: .cancel, handler: nil)
+    let noAction = UIAlertAction(title: "no_text".localized, style: .cancel, handler: nil)
     alert.addAction(yesAction)
     alert.addAction(noAction)
     self.present(alert, animated: true, completion: nil)

@@ -143,15 +143,14 @@ extension Date {
   var day: String  {
     let formatter = DateFormatter()
     formatter.dateFormat = "EEE"
-    formatter.timeZone = TimeZone(secondsFromGMT: 0)
+    formatter.timeZone = TimeZone(secondsFromGMT: 19800)
     return formatter.string(from: self)
   }
   
   var time: String  {
     let formatter = DateFormatter()
+    formatter.timeZone = TimeZone(secondsFromGMT: 19800)
     formatter.dateFormat = "h:mm a"
-    formatter.timeZone = TimeZone(secondsFromGMT: 0)
-//    formatter.locale = Locale(identifier: "en_IN")
     return formatter.string(from: self)
   }
   
@@ -182,3 +181,4 @@ extension Numeric {
   }
   
 }
+

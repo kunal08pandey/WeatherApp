@@ -90,7 +90,7 @@ enum SocialLinks: Int {
   case twitter
   case linkedIn
   case github
-  
+  case website
   
   var url: URL? {
     switch self {
@@ -102,6 +102,8 @@ enum SocialLinks: Int {
       return URL(string: "https://www.linkedin.com/company/openweathermap/")
     case .github:
       return URL(string: "https://github.com/search?q=openweathermap&ref=cmdform")
+    default:
+      return URL(string: "https://openweathermap.org/guide")
     }
   }
 }

@@ -22,7 +22,7 @@ struct WeatherRequest: URLQueryRequest {
   }
   
   var parameters: Parameter {
-    return ["lat": "\(lat)", "lon": "\(lon)", "cnt": "5"]
+    return ["lat": "\(lat)", "lon": "\(lon)"]
   }
 }
 
@@ -36,7 +36,7 @@ struct ForecastRequest: URLQueryRequest {
   }
   
   var parameters: Parameter {
-    return ["lat": "\(lat)", "lon": "\(lon)"]
+    return ["lat": "\(lat)", "lon": "\(lon)", "cnt": "5"]
   }
 }
 
