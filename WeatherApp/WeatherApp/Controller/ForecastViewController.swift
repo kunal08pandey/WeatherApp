@@ -8,7 +8,7 @@
 import UIKit
 import ProgressHUD
 
-class ForecastViewController: UIViewController {
+class ForecastViewController: BaseViewController {
   
   let viewModel = assembler.forecastViewModel()
   
